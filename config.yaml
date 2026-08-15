@@ -1,0 +1,75 @@
+# =========================================================
+# AIニュース自動収集システム 設定ファイル
+# ここを編集するだけで挙動を調整できます
+# =========================================================
+
+# --- 収集設定 ---
+collection:
+  # 各RSS/検索クエリから取得する最大件数
+  max_items_per_source: 10
+  # 収集対象とする直近時間（時間単位）。これより古い記事は候補から除外
+  lookback_hours: 30
+
+# --- 安定しているRSSフィード（一次情報寄り・信頼性が高いもの） ---
+# 企業公式ブログはURLが変更されることがあるため、稼働確認の上ご利用ください
+rss_feeds:
+  - name: "TechCrunch AI"
+    url: "https://techcrunch.com/category/artificial-intelligence/feed/"
+  - name: "VentureBeat AI"
+    url: "https://venturebeat.com/category/ai/feed/"
+  - name: "MIT Technology Review"
+    url: "https://www.technologyreview.com/feed/"
+  - name: "The Verge (AI)"
+    url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+  - name: "Ars Technica"
+    url: "https://feeds.arstechnica.com/arstechnica/index"
+
+# --- Google News 検索型RSS ---
+# 公式ブログのRSS URLが不安定なため、企業名・キーワードでの検索型RSSを併用し取得漏れを防ぐ
+# クエリは自由に追加・編集可能
+google_news_queries:
+  - name: "OpenAI"
+    query: "OpenAI"
+  - name: "Anthropic"
+    query: "Anthropic AI"
+  - name: "Google DeepMind"
+    query: "Google DeepMind"
+  - name: "AIエージェント"
+    query: "AI agent OR AIエージェント"
+  - name: "AI半導体"
+    query: "AI chip OR NVIDIA AI OR AI半導体"
+  - name: "AI資金調達・買収"
+    query: "AI startup funding OR AI acquisition"
+
+google_news_locale:
+  hl: "ja"
+  gl: "JP"
+  ceid: "JP:ja"
+
+# --- 評価・選定基準 ---
+evaluation:
+  # 0-10のスコア。この値以上のもののみ記事化候補にする
+  min_score_threshold: 6
+  # 1日に記事化する最大件数（水増しはしない。候補が少なければこれ以下でもOK）
+  max_articles_per_day: 6
+  # 候補が1件も基準を満たさない場合は投稿自体をスキップする
+  skip_if_no_candidates: true
+
+# --- 重複判定 ---
+dedup:
+  # 同一URLを再掲載しないとみなす日数
+  lookback_days: 14
+  # 保持する既出ニュース履歴の最大件数（肥大化防止）
+  max_history_items: 500
+
+# --- Discordメッセージ設定 ---
+discord:
+  # 1メッセージあたりの最大文字数（Discord上限2000のうち余裕を持たせる）
+  max_message_length: 1900
+  username: "AI新聞Bot"
+
+# --- OpenAIモデル設定 ---
+openai:
+  model: "gpt-4o"
+  evaluation_max_tokens: 4000
+  article_max_tokens: 8000
