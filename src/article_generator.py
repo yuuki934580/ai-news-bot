@@ -75,7 +75,7 @@ def generate_article(
         return None
 
     date_str = datetime.now().strftime("%Y年%m月%d日")
-    client = OpenAI(api_key=api_key)
+    client = OpenAI(api_key=api_key, timeout=60.0, max_retries=5)
 
     try:
         response = client.chat.completions.create(
