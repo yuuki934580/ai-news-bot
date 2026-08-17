@@ -55,7 +55,7 @@ def evaluate_candidates(
     if not candidates:
         return []
 
-    client = OpenAI(api_key=api_key)
+    client = OpenAI(api_key=api_key, timeout=60.0, max_retries=5)
 
     try:
         response = client.chat.completions.create(
